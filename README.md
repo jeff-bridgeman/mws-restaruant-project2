@@ -2,4 +2,8 @@
 Udacity Project 2
 
 
-## SLDJF:SLDFJ:SDKLFJDS:F
+## How to run the program
+
+1. Run `npm install`to install dependencies.
+2. Run `gulp serve`
+3. Visit `http://localhost:8000`

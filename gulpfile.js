@@ -35,7 +35,7 @@ gulp.task('scripts', () => {
     .pipe($.if(dev, $.sourcemaps.init()))
     .pipe($.babel())
     .pipe($.if(dev, $.sourcemaps.write('.')))
-    .pipe(gulp.dest('.tmp/scripts'))
+    .pipe(gulp.dest('.tmp/scripts/'))
     .pipe(reload({stream: true}));
 });
 
@@ -62,7 +62,7 @@ gulp.task('dbhelper', () => {
     .require('app/scripts/dbhelper.js', { entry: true })
     .bundle()
     .pipe(source('dbhelper.js'))
-    .pipe(gulp.dest('.tmp/scripts'));
+    .pipe(gulp.dest('.tmp/scripts/'));
 });
 
 function lint(files) {
@@ -101,9 +101,9 @@ gulp.task('html', ['styles', 'scripts','dbhelper','sw'], () => {
 });
 
 gulp.task('images', () => {
-  return gulp.src('app/images/**/*')
+  return gulp.src('app/img/**/*')
     .pipe($.cache($.imagemin()))
-    .pipe(gulp.dest('dist/images'));
+    .pipe(gulp.dest('dist/img'));
 });
 
 gulp.task('fonts', () => {
@@ -142,8 +142,9 @@ gulp.task('serve', () => {
       '.tmp/fonts/**/*'
     ]).on('change', reload);
 
-    gulp.watch('app/styles/**/*.scss', ['styles']);
-    gulp.watch('app/scripts/**/*.js', ['scripts']);
+    gulp.watch('app/styles/**/*.scss', ['html', 'styles']);
+    gulp.watch('app/scripts/**/*.js', ['html', 'scripts', 'dbhelper']);
+    gulp.watch('app/sw.js', ['sw']);
     gulp.watch('app/fonts/**/*', ['fonts']);
     gulp.watch('bower.json', ['wiredep', 'fonts']);
   });
